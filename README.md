@@ -34,7 +34,7 @@ TIFF to OCR PDF Application
 
 ### Help
 
-* language will be defined in "lang.ini" file in the same path of input files.
+* language will be defined in "lang.ini" file in the same path of input TIFF files.
 * language code should be three digit iso code
 * Multiple language should be add by separation of "+" symbol. e.g.: eng+dan
 
