@@ -6,7 +6,6 @@ from PyPDF2 import PdfFileMerger
 import glob
 
 print("\n TIFF to OCR PDF & PDF/A Conversion \n")
-print("\n Developed by A Rajasekaran\n")
 print("\n Date: 20 May 2022 \n\n")
 
 
@@ -65,19 +64,11 @@ for fname in os.listdir(filepath):
         continue
     path = os.path.join(filepath, fname) 
     ghostScriptExec = ['gs', '-dBATCH', '-dNOPAUSE', '-dUseCIEColor', '-sProcessColorModel=DeviceRGB', '-dCompatibilityLevel=1.5', '-dJPEGQ=100', 
-                   '-sDEVICE=pdfwrite', '-dFastWebView', '-sOutputFile='+ filepath + 'Page-' + fname, path]
+                   '-sDEVICE=pdfwrite', '-dFastWebView', '-dAutoRotatePages=/None', '-sOutputFile='+ filepath + 'Page-' + fname, path]
     ghostscript.Ghostscript(*ghostScriptExec)
-    print("\n Conversion Completed\n")
-
-
-
-# Above FOR loop created the JPEG compression PDF file, so now delete the png compression type files.
-for fname in os.listdir(filepath):
-    if not fname.endswith(".tif"):
-        continue
-    pname1 = os.path.splitext(fname)[0]
-    delete = filepath + pname1 + ".pdf"
+    delete = filepath + fname
     os.remove(delete)
+    print("\n Conversion Completed\n")
 
 
 
@@ -88,15 +79,12 @@ for fname in os.listdir(filepath):
         continue
     path = os.path.join(filepath, fname) 
     print(path)
-
     output_files = filepath + directory
     ghostScriptExec = ['gs', '-dPDFA', '-dBATCH', '-dNOPAUSE', '-dUseCIEColor', '-sProcessColorModel=DeviceRGB',
-                   '-sDEVICE=pdfwrite', '-dFastWebView', '-sPDFACompatibilityPolicy=1',
+                   '-sDEVICE=pdfwrite', '-dFastWebView', '-dAutoRotatePages=/None', '-sPDFACompatibilityPolicy=1',
                    '-sOutputFile='+ output_files + "/" + 'PDFA-' + fname, path]
     ghostscript.Ghostscript(*ghostScriptExec)
     print("\n Conversion Completed\n")
-
-
 
 
 # Book level PDF (Combined PDF) generation
@@ -112,14 +100,14 @@ merger.close()
 
 # collate_pdf file changed to fastwebview
 ghostScriptExec = ['gs', '-dBATCH', '-dNOPAUSE', '-dUseCIEColor', '-sProcessColorModel=DeviceRGB', '-dCompatibilityLevel=1.5', '-dJPEGQ=100', 
-                   '-sDEVICE=pdfwrite', '-dFastWebView', '-sOutputFile='+ bookpdfpath, collate_pdf]
+                   '-sDEVICE=pdfwrite', '-dFastWebView', '-dAutoRotatePages=/None', '-sOutputFile='+ bookpdfpath, collate_pdf]
 ghostscript.Ghostscript(*ghostScriptExec)
 delete = filepath + "collate.pdf"
 os.remove(delete)
 
 
 ghostScriptExec = ['gs', '-dPDFA', '-dBATCH', '-dNOPAUSE', '-dUseCIEColor', '-sProcessColorModel=DeviceRGB',
-                   '-sDEVICE=pdfwrite', '-dFastWebView', '-sPDFACompatibilityPolicy=1',
+                   '-sDEVICE=pdfwrite', '-dFastWebView', '-dAutoRotatePages=/None', '-sPDFACompatibilityPolicy=1',
                    '-sOutputFile='+ output_files + "/" + 'PDFA-' + "combined_pdf.pdf", bookpdfpath]
 ghostscript.Ghostscript(*ghostScriptExec)
 
